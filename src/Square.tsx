@@ -1,6 +1,6 @@
-import React, { useContext, useCallback } from "react";
-import { Square as SquareData } from "./reducer";
-import { DispatchContext } from "./App";
+import React, { useContext, useCallback } from 'react';
+import { Square as SquareData } from './reducer';
+import { DispatchContext } from './App';
 
 export interface Props {
   x: number;
@@ -13,7 +13,7 @@ export const Square: React.FC<Props> = ({ x, y, square }) => {
 
   const onClick = useCallback(() => {
     dispatch({
-      type: "SquareClicked",
+      type: 'SquareClicked',
       x,
       y,
     });
@@ -21,6 +21,7 @@ export const Square: React.FC<Props> = ({ x, y, square }) => {
 
   return (
     <div className="square" onClick={onClick}>
+      {`(${x}, ${y})`}
       {JSON.stringify(square.state)}
     </div>
   );

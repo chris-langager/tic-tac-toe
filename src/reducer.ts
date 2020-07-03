@@ -48,7 +48,7 @@ export function reducer(state: State, action: Action): State {
 function squareClicked(state: State, action: SquareClicked): State {
   const { board, activePlayer, phase } = state;
   const { x, y } = action;
-  const square = board[x][y];
+  const square = board[y][x];
 
   //if the game is over, clicking on a square should do nothing
   if (phase !== 'playing') {
@@ -60,8 +60,8 @@ function squareClicked(state: State, action: SquareClicked): State {
     return state;
   }
 
-  const updatedBoard = board.map((row, rowIndex) =>
-    row.map((boardSquare, columnIndex) => {
+  const updatedBoard = board.map((row, columnIndex) =>
+    row.map((boardSquare, rowIndex) => {
       if (x !== rowIndex || y !== columnIndex) {
         return boardSquare;
       }
@@ -120,10 +120,10 @@ function getRandomPlayer(): Player {
 function getNewBoard(): Board {
   const board: Square[][] = [];
 
-  for (let x = 0; x < WIDTH; x++) {
-    board[x] = [];
-    for (let y = 0; y < HEIGHT; y++) {
-      board[x].push({
+  for (let y = 0; y < HEIGHT; y++) {
+    board[y] = [];
+    for (let x = 0; x < WIDTH; x++) {
+      board[y].push({
         state: 'empty',
         winning: false,
       });
@@ -135,9 +135,9 @@ function getNewBoard(): Board {
 
 function getWinner(board: Board): Player | null {
   //check for rows
-  for (let x = 0; x < WIDTH; x++) {
-    const p1 = board[x].filter(({ state }) => state === 'Player 1');
-    const p2 = board[x].filter(({ state }) => state === 'Player 2');
+  for (let y = 0; y < HEIGHT; y++) {
+    const p1 = board[y].filter(({ state }) => state === 'Player 1');
+    const p2 = board[y].filter(({ state }) => state === 'Player 2');
 
     if (p1.length === WIDTH) {
       return 'Player 1';
@@ -147,13 +147,35 @@ function getWinner(board: Board): Player | null {
     }
   }
 
+  for (let x = 0; x < WIDTH; x++) {
+    const column = getColumn(board, x);
+
+    const p1 = column.filter(({ state }) => state === 'Player 1');
+    const p2 = column.filter(({ state }) => state === 'Player 2');
+
+    if (p1.length === HEIGHT) {
+      return 'Player 1';
+    }
+    if (p2.length === HEIGHT) {
+      return 'Player 2';
+    }
+  }
+
   return null;
 }
 
+function getColumn(board: Board, x: number) {
+  const ret = [];
+  for (let y = 0; y < HEIGHT; y++) {
+    ret.push(board[y][x]);
+  }
+  return ret;
+}
+
 function allSpacesClaimed(board: Board): boolean {
-  for (let x = 0; x < WIDTH; x++) {
-    for (let y = 0; y < HEIGHT; y++) {
-      if (board[x][y].state === 'empty') {
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
+      if (board[y][x].state === 'empty') {
         return false;
       }
     }
