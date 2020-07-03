@@ -1,12 +1,40 @@
+.game {
+  text-align: center;
+}
+
 .board {
+  margin: 25px auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  width: 598px;
 }
 
 .square {
-  width: 32%;
-  padding-bottom: 32%;
-  margin-bottom: 2%;
-  position: relative;
+  width: 178px;
+  height: 200px;
+  padding: 10px;
+  border: 1px solid black;
+  font-size: 180px;
+}
+
+.square.top {
+  border-top: 0;
+}
+.square.right {
+  border-right: 0;
+}
+.square.bottom {
+  border-bottom: 0;
+}
+.square.left {
+  border-left: 0;
+}
+
+.square.winning {
+  background-color: blue;
+}
+
+.game.cat .square {
+  background-color: gray;
 }

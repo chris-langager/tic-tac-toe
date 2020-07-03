@@ -10,9 +10,9 @@ export interface Props {
 export const Board: React.FC<Props> = ({ board }) => {
   return (
     <div className="board">
-      {board.map((row, y) =>
-        row.map((square, x) => <Square key={`${x},${y}`} x={x} y={y} square={square} />)
-      )}
+      {board.map((square) => (
+        <Square key={`${square.x},${square.y}`} square={square} />
+      ))}
     </div>
   );
 };
