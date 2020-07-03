@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer, Dispatch, Context, createContext } from "react";
+import "./App.css";
+import { reducer, getNewGameState, Action } from "./reducer";
+import { Board } from "./Board";
 
-function App() {
+export const DispatchContext: Context<Dispatch<Action>> = createContext(
+  (() => null) as React.Dispatch<Action>
+);
+
+export const App: React.FC = () => {
+  const [state, dispatch] = useReducer(reducer, getNewGameState());
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="game">
+      <DispatchContext.Provider value={dispatch}>
+        <div>{state.turn}</div>
+        <div>It's {state.activePlayer}'s turn!</div>
+        <Board board={state.board} />
+      </DispatchContext.Provider>
     </div>
   );
-}
-
-export default App;
+};
