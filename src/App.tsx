@@ -13,7 +13,15 @@ export const App: React.FC = () => {
     <div className="game">
       <DispatchContext.Provider value={dispatch}>
         <div>{state.turn}</div>
-        <div>It's {state.activePlayer}'s turn!</div>
+
+        {state.phase === "playing" && (
+          <div>It's {state.activePlayer}'s turn</div>
+        )}
+
+        {state.phase === "won" && <div>{state.activePlayer} won!</div>}
+
+        {state.phase === "cat" && <div>nobody wins =(</div>}
+
         <Board board={state.board} />
       </DispatchContext.Provider>
     </div>
